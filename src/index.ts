@@ -9,6 +9,7 @@ export default {
 
 		const fetchProcessCurrencies = async () => {
 			const currencies: currencyRateList = await fetch('https://openexchangerates.org/api/latest.json?app_id=' + env.APP_ID).then(res => res.json());
+			await env.CURRENCIES.put('rates', JSON.stringify(currencies));
 			const timestamp = currencies.timestamp;
 			const rates = currencies.rates;
 			for (const [currency, rate] of Object.entries(rates)) {
@@ -24,7 +25,7 @@ export default {
 				}
 			  }
 		}
-		// Runs 12:00AM every day.
+		// Runs every hour.
 		ctx.waitUntil(fetchProcessCurrencies());
 	},
   };
