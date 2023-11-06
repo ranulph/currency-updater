@@ -12,6 +12,7 @@ export default {
 			await env.CURRENCIES.put('rates', JSON.stringify(currencies));
 			const timestamp = currencies.timestamp;
 			const rates = currencies.rates;
+			const updatedList = [];
 			for (const [currency, rate] of Object.entries(rates)) {
 				let current = await env.CURRENCIES.get(currency);
 				if (current) {
@@ -22,8 +23,17 @@ export default {
 						updatedAt: timestamp
 					};
 					env.CURRENCIES.put(currency, JSON.stringify(updated))
+					let updatedListItem = {
+						key: currency,
+						value: {
+							...updated,
+							flag: "https://images.identify.run/flags/" + updated.countryCode.toLowerCase() + ".svg"
+						}
+					};
+					updatedList.push(updatedListItem);
 				}
-			  }
+			}
+			env.CURRENCIES.put('currencies', JSON.stringify(updatedList));
 		}
 		// Runs every hour.
 		ctx.waitUntil(fetchProcessCurrencies());
