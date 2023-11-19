@@ -16,13 +16,13 @@ export default {
 			for (const [currency, rate] of Object.entries(rates)) {
 				let current = await env.CURRENCIES.get(currency);
 				if (current) {
-					let currentJSON = await JSON.parse(current)
+					let currentJSON = await JSON.parse(current);
 					let updated = {
 						...currentJSON,
 						rateUSD: rate,
 						updatedAt: timestamp
 					};
-					env.CURRENCIES.put(currency, JSON.stringify(updated))
+					env.CURRENCIES.put(currency, JSON.stringify(updated));
 					let updatedListItem = {
 						key: currency,
 						value: {
